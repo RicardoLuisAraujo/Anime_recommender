@@ -57,4 +57,5 @@ if button_search or anime:
         anime_title = recommendation_df.iloc[num]['anime']
         img_url = data_images[data_images.title ==
                               anime_title]['image_url'].item()
+        print(img_url)
         st.image(img_url, caption=anime_title)
