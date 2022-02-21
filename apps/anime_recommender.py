@@ -1,7 +1,14 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
-from PIL import Image
+from mal import AnimeSearch
+
+st.set_page_config(
+    page_title="Anime Recommender App",
+    page_icon="🧊",
+    layout="wide",  # or centered
+    initial_sidebar_state="expanded",
+)
 
 st.title('Anime Recommender')
 
@@ -49,13 +56,19 @@ anime = st.text_input("Check for Similar Animes", placeholder='Anime Name')
 button_search = st.button("Search")
 
 if button_search or anime:
+
     recommendation_df = recommendation_system(anime, data)
     st.header('People Also Liked... (No Machine Learning)')
-    st.dataframe(recommendation_df)
+    st.write(recommendation_df)
 
+    st.text("")
+
+    column = st.columns(len(recommendation_df))
     for num in range(len(recommendation_df)):
         anime_title = recommendation_df.iloc[num]['anime']
-        img_url = data_images[data_images.title ==
-                              anime_title]['image_url'].item()
-        print(img_url)
-        st.image(img_url, caption=anime_title)
+
+        search = AnimeSearch(anime_title)
+        img_url = search.results[1].image_url
+
+        with column[num]:
+            st.image(img_url, caption=anime_title)  # , width=100)
