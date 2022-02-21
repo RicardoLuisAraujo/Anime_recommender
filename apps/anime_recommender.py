@@ -6,11 +6,12 @@ from mal import AnimeSearch
 st.set_page_config(
     page_title="Anime Recommender App",
     page_icon="🧊",
-    layout="wide",  # or centered
+    layout="centered",  # or centered
     initial_sidebar_state="expanded",
 )
 
 st.title('Anime Recommender')
+st.write('Use this site to search for Similar Anime or to find great anime especially for you!')
 
 dataset_path = '../data/score_matrix.parquet'
 anime_img_path = '../data/AnimeList.csv'
@@ -51,24 +52,32 @@ data_images = load_data_images(anime_img_path)
 # Notify the reader that the data was successfully loaded.
 data_load_state.text("Done! (using st.cache)")
 
-
 anime = st.text_input("Check for Similar Animes", placeholder='Anime Name')
-button_search = st.button("Search")
+#button_search = st.button("Search")
 
-if button_search or anime:
+if anime:
 
-    recommendation_df = recommendation_system(anime, data)
-    st.header('People Also Liked... (No Machine Learning)')
-    st.write(recommendation_df)
+    search = AnimeSearch(anime)
+    img_url = search.results[0].image_url
+    col1, col2, col3 = st.columns([1, 1, 1])
+    col2.image(img_url, caption=anime)
 
-    st.text("")
+    #st.image(img_url, caption=anime)
+
+    recommendation_df = recommendation_system(anime, data).iloc[1:]
+    st.header('People Also Liked...')
+    st.write('(No Machine Learning)')
+    # st.write(recommendation_df)
+
+    # st.text("")
 
     column = st.columns(len(recommendation_df))
+
     for num in range(len(recommendation_df)):
         anime_title = recommendation_df.iloc[num]['anime']
 
         search = AnimeSearch(anime_title)
-        img_url = search.results[1].image_url
+        img_url = search.results[0].image_url
 
         with column[num]:
-            st.image(img_url, caption=anime_title)  # , width=100)
+            st.image(img_url, caption=anime_title, use_column_width='always')
