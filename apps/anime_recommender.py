@@ -30,6 +30,13 @@ def load_data_images(path):
 
 
 @st.cache
+def get_image_url(anime_name):
+    search = AnimeSearch(anime_name)
+    img_url = search.results[0].image_url
+    return img_url
+
+
+@st.cache
 def recommendation_system(anime_name, score_matrix_df):
     # grab user ratings for the a certain anime
     anime_user_ratings = score_matrix_df[anime_name]
@@ -57,27 +64,23 @@ anime = st.text_input("Check for Similar Animes", placeholder='Anime Name')
 
 if anime:
 
-    search = AnimeSearch(anime)
-    img_url = search.results[0].image_url
+    img_url = get_image_url(anime)
     col1, col2, col3 = st.columns([1, 1, 1])
     col2.image(img_url, caption=anime)
-
-    #st.image(img_url, caption=anime)
 
     recommendation_df = recommendation_system(anime, data).iloc[1:]
     st.header('People Also Liked...')
     st.write('(No Machine Learning)')
-    # st.write(recommendation_df)
-
-    # st.text("")
 
     column = st.columns(len(recommendation_df))
 
     for num in range(len(recommendation_df)):
         anime_title = recommendation_df.iloc[num]['anime']
 
-        search = AnimeSearch(anime_title)
-        img_url = search.results[0].image_url
+        img_url = get_image_url(anime_title)
 
         with column[num]:
             st.image(img_url, caption=anime_title, use_column_width='always')
+
+    st.header('Made for You...')
+    st.write('(Collaborative Learner - FastAI Deep Learning Model)')
