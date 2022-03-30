@@ -10,11 +10,13 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
-st.title('Anime Recommender')
-st.write('Use this site to search for Similar Anime or to find great anime especially for you!')
+st.title("Anime Recommender")
+st.write(
+    "Use this site to search for Similar Anime or to find great anime especially for you!"
+)
 
-dataset_path = '../data/score_matrix.parquet'
-anime_img_path = '../data/AnimeList.csv'
+dataset_path = "../data/score_matrix.parquet"
+anime_img_path = "../data/AnimeList.csv"
 
 
 @st.cache
@@ -45,22 +47,27 @@ def recommendation_system(anime_name, score_matrix_df):
     similar_to_anime = score_matrix_df.corrwith(anime_user_ratings)
 
     # Clean the null values from both movies
-    corr_anime = pd.DataFrame(similar_to_anime, columns=['Correlation'])
+    corr_anime = pd.DataFrame(similar_to_anime, columns=["Correlation"])
 
     # corr_anime.dropna(inplace=True)
-    return corr_anime.sort_values('Correlation', ascending=False).head(10).rename_axis('anime').reset_index()
+    return (
+        corr_anime.sort_values("Correlation", ascending=False)
+        .head(10)
+        .rename_axis("anime")
+        .reset_index()
+    )
 
 
 # Create a text element and let the reader know the data is loading.
-data_load_state = st.text('Loading data...')
+data_load_state = st.text("Loading data...")
 # Load 10,000 rows of data into the dataframe.
 data = load_data(dataset_path)
 data_images = load_data_images(anime_img_path)
 # Notify the reader that the data was successfully loaded.
 data_load_state.text("Done! (using st.cache)")
 
-anime = st.text_input("Check for Similar Animes", placeholder='Anime Name')
-#button_search = st.button("Search")
+anime = st.text_input("Check for Similar Animes", placeholder="Anime Name")
+# button_search = st.button("Search")
 
 if anime:
 
@@ -69,18 +76,18 @@ if anime:
     col2.image(img_url, caption=anime)
 
     recommendation_df = recommendation_system(anime, data).iloc[1:]
-    st.header('People Also Liked...')
-    st.write('(No Machine Learning)')
+    st.header("People Also Liked...")
+    st.write("(No Machine Learning)")
 
     column = st.columns(len(recommendation_df))
 
     for num in range(len(recommendation_df)):
-        anime_title = recommendation_df.iloc[num]['anime']
+        anime_title = recommendation_df.iloc[num]["anime"]
 
         img_url = get_image_url(anime_title)
 
         with column[num]:
-            st.image(img_url, caption=anime_title, use_column_width='always')
+            st.image(img_url, caption=anime_title, use_column_width="always")
 
-    st.header('Made for You...')
-    st.write('(Collaborative Learner - FastAI Deep Learning Model)')
+    st.header("Made for You...")
+    st.write("(Collaborative Learner - FastAI Deep Learning Model)")
