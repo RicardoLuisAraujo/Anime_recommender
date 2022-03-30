@@ -38,6 +38,11 @@ def get_image_url(anime_name):
     return img_url
 
 
+def anime_search(anime_name):
+    search = AnimeSearch(anime_name)
+    return search.results[0]
+
+
 @st.cache
 def recommendation_system(anime_name, score_matrix_df):
     # grab user ratings for the a certain anime
