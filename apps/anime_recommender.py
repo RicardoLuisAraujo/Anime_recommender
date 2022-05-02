@@ -63,6 +63,19 @@ def recommendation_system(anime_name, score_matrix_df):
     )
 
 
+@st.cache
+def get_recommended_animes(recommendations_df):
+    recommended_animes = recommendations_df.anime.tolist()
+
+    for anime_title in recommended_animes:
+
+        img_url = get_image_url(anime_title)
+
+        with column[num]:
+            st.image(img_url, caption=anime_title, use_column_width="always")
+    return recommended_animes
+
+
 # Create a text element and let the reader know the data is loading.
 data_load_state = st.text("Loading data...")
 # Load 10,000 rows of data into the dataframe.
@@ -86,11 +99,13 @@ if anime:
 
     column = st.columns(len(recommendation_df))
 
-    for num in range(len(recommendation_df)):
-        anime_title = recommendation_df.iloc[num]["anime"]
+    # get list of recommended animes
+    anime_titles = recommendation_df.anime.tolist()
+    img_urls = map(get_image_url, anime_titles)
 
-        img_url = get_image_url(anime_title)
-
+    for num, anime_title, img_url in zip(
+        range(len(recommendation_df)), anime_titles, img_urls
+    ):
         with column[num]:
             st.image(img_url, caption=anime_title, use_column_width="always")
 
