@@ -111,7 +111,7 @@ if anime:
 
     recommendation_df = recommendation_system(anime, data).iloc[1:]
     st.header("People Also Liked...")
-    st.write("(No Machine Learning)")
+    # st.write("(No Machine Learning)")
 
     column = st.columns(len(recommendation_df))
     cols = st.columns(10)
