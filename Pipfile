@@ -14,6 +14,8 @@ matplotlib = "*"
 seaborn = "*"
 scipy = "*"
 sklearn = "*"
+fastapi = "*"
+uvicorn = {extras = ["standard"], version = "*"}
 
 [dev-packages]
 
