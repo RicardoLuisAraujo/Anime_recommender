@@ -15,9 +15,9 @@ st.write(
     "Use this site to search for Similar Anime or to find great anime especially for you!"
 )
 
-dataset_path = "../data/score_matrix.parquet"
-anime_img_path = "../data/AnimeList.csv"
-anime_predictions_list_path = "../anime_predictions_list_knn.pkl"
+dataset_path = "../../data/score_matrix.parquet"
+anime_img_path = "../../data/AnimeList.csv"
+anime_predictions_list_path = "../../anime_predictions_list_knn.pkl"
 
 
 @st.cache
@@ -42,6 +42,7 @@ def get_image_url(anime_name):
 def anime_search(anime_name):
     search = AnimeSearch(anime_name)
     return search.results[0]
+
 
 @st.cache
 def recommendation_system(anime_name, score_matrix_df):
@@ -78,12 +79,14 @@ def get_recommended_animes(recommendations_df):
 
 # KNN
 
+
 @st.cache
 def load_anime_predictions(anime_predictions_file_path):
     predictions_file = open(anime_predictions_file_path, "rb")
     anime_predictions_dict = pickle.load(predictions_file)
 
     return anime_predictions_dict
+
 
 # Create a text element and let the reader know the data is loading.
 data_load_state = st.text("Loading data...")
@@ -100,7 +103,7 @@ anime = st.text_input("Check for Similar Animes", placeholder="Anime Name")
 
 if anime:
 
-    #st.write(anime_predictions_dict)
+    # st.write(anime_predictions_dict)
     predictions = anime_predictions_dict[anime]
     img_urls_knn = list(map(get_image_url, predictions))
     # st.write(predictions)
@@ -139,4 +142,3 @@ if anime:
     for col, img_url, pred in zip(cols, img_urls_knn, predictions):
 
         col.image(img_url, caption=pred, use_column_width="always")
-
