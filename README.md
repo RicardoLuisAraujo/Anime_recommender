@@ -9,6 +9,8 @@ This project is a simple anime recommender system. It uses the [Anime Dataset](h
 
 The App is divided into two parts. The first part is a FastAPI server (backend) that provides the data and endpoints for the queries. The second part is a Streamlit App that uses the data from the server to provide a simple user interface.
 
+I also created one notebook with a KNN model that I used to create the recommendations. The notebook is not part of the app, but it can be found in the notebooks folder and can be implemented into the app later through a pickle file.
+
 ## Installation
 
 Use the package manager pipenv to install the required packages.
