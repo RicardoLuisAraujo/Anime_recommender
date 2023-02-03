@@ -2,8 +2,8 @@
 
 ## Example Images
 
-![Example Image 1]
-![Example Image 2]
+![Example Image 1](example_1.png)
+![Example Image 2](example_2.png)
 
 This project is a simple anime recommender system. It uses the [Anime Dataset](https://www.kaggle.com/CooperUnion/anime-recommendations-database) from Kaggle. The dataset contains 12,294 anime and 73,516 user ratings.
 
